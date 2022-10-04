@@ -11,5 +11,5 @@ COPY --from=BUILD_IMAGE vprofile-repo/target/vprofile-v2.war /usr/local/tomcat/w
 
 EXPOSE 8080
 
-CMD["catalina.sh","run"]
+CMD ["catalina.sh","run"]
 
