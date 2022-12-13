@@ -1,0 +1,38 @@
+setup with KOPS(prequisites)
+1. Domain for Kubernetes DNS recors eg: godaddy
+2. create a linux vm and setup
+   *. kops,kubectl,ssh keys, awscli
+3. login to aws account and setup
+   *. s3 bucket, IAM user for awscli or role, route 53 hosted  zone
+4.  login to domain registrar
+   *. create NS records for subdomain poiting to route53 hosted zone(domain on godaddy subdomain on route53) NS records
+
+in ec2
+sudo apt update && apt install awscli -y
+aws cli configure (if IAM user )
+then download kubectl and add excutable permission chmod 764 mv to /usr/local/bin/
+after that download kops and add excutable permission and move the excutable to /usr/local/bin/
+
+
+
+kops create cluster --name=vprofileapp.k8smunzir.com \ 
+--state=s3://vprofile-kops-state-010 --zones=us-west-2b,us-west-2c \ 
+--node-count=2 --node-size=t3.small --master-size=t3.medium --dns-zone=vprofileapp.k8smunzir.com \ 
+--node-volume-size=8 --master-volume-size=8
+
+
+kops create cluster --name=kubevpro.k8smunzir.com --state=s3://vprofile-kops-state-010 --zones=us-west-2a,us-west-2b --node-count=2 --node-size=t3.small --master-size=t3.medium --dns-zone=kubevpro.k8smunzir.com --node-volume-size=8 --master-volume-size=8
+
+ note: whenever you're running kops command you must use s3://<>
+kops delete cluster --name kubevpro.k8smunzir.com --state=s3://vprofile-kops-state-010 --yes --admin
+
+
+ekcsctl
+
+eksctl create cluster --name munzir  \
+--region us-west-2 \
+--node-type t2.small \
+--nodes-min 2 \
+--nodes-max 2 \ 
+--zones <AZ-1>,<AZ-2>
+
